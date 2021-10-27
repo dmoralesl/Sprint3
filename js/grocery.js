@@ -25,6 +25,8 @@ var total = 0;
 
 // Exercise 1
 function addToCartList(id) {
+    const productSelected = products[id - 1];
+    cartList.push(productSelected);
     // 1. Loop for to the array products to get the item to add to cart
     // 2. Add found product to the cartList array
 }
@@ -46,7 +48,6 @@ function calculateSubtotals() {
 
 // Exercise 4
 function calculateTotal() {
-    console.log(Object.values(subtotal))
     // Calculate total price of the cart either using the "cartList" array
     // [David] Getting values (objects) from subtotals object. Then extracting value (type is not interesting at this point)
     // and reducing value to sum all subtotals to get total amount.
@@ -55,7 +56,6 @@ function calculateTotal() {
             .reduce((previousValue, currentSubtotal) => {
                 return previousValue + currentSubtotal;
                 });
-    console.log(total)
 }
 
 // Exercise 5
@@ -74,6 +74,8 @@ function applyPromotionsCart() {
             cart[index].subtotalWithDiscount = cart[index].quantity * 10;
         } else if (product.name === 'Instant cupcake mixture' && cart[index].quantity > 9) {
             cart[index].subtotalWithDiscount = cart[index].quantity * (cart[index].price * 0.66);
+        } else {
+            cart[index].subtotalWithDiscount = cart[index].quantity * cart[index].price;
         }
     })
 }
@@ -94,19 +96,20 @@ function addToCart(id) {
         cart[productIndex] = {
             ...cart[productIndex],
             quantity: cart[productIndex].quantity + 1,
-            subtotal: cart[productIndex].subtotal + cart[productIndex].price,
-            subtotalWithDiscount: cart[productIndex].subtotal + cart[productIndex].price
-        }
+            subtotal: cart[productIndex].subtotal + cart[productIndex].price
+            }
 
     } else { // Product is the first of it's type
         cart.push({
             ...productSelected,
             quantity: 1,
-            subtotal: productSelected.price,
-            subtotalWithDiscount: productSelected.price
-        });
+            subtotal: productSelected.price
+            });
     
     }
+
+    // Adding to cartList because other funcions depends on that object it's updated
+    addToCartList(id);
 
     // Updating subtotals with new product added
     calculateSubtotals();
@@ -116,17 +119,45 @@ function addToCart(id) {
 
     // Checking if promotions should be applied
     applyPromotionsCart();
+    console.log(cart)
 }
 
 // Exercise 9
 function removeFromCart(id) {
-    // 1. Loop for to the array products to get the item to add to cart
-    // 2. Add found product to the cartList array
+    // Getting model of product to remove
+    const product = products[id -1];
+    const indexProductInCart = cart.findIndex( cartProduct => cartProduct.name === product.name);
+    // If we have only one product of this type in the cart we remove the object in the array
+    if (cart[indexProductInCart].quantity === 1) {
+        cart.splice(indexProductInCart, 1);
+    } else { // If we have more than one, we must reduce in 1 the quantity
+        cart[indexProductInCart] = {
+            ...cart[indexProductInCart],
+            quantity: cart[indexProductInCart].quantity  - 1,
+            subtotal: cart[indexProductInCart].subtotal - cart[indexProductInCart].price
+        }
+        // And we must calculate subtotalWithDisccount again because removing quantity could change the rules
+        applyPromotionsCart();
+    }
+    console.log(cart);
 }
 
 
 
 // Exercise 10
 function printCart() {
+    let cartModal = document.querySelector('#cartModal');
+    let listProducts = cartModal.querySelector('.list');
+    // Cleaning previous list to refresh
+    listProducts.innerHTML = ''
     // Fill the shopping cart modal manipulating the shopping cart dom
+    cart.map(product => {
+        let newProduct = document.createElement('li');
+        newProduct.innerHTML = `x${product.quantity} - ${product.name} (${product.subtotalWithDiscount})`;
+        listProducts.appendChild(newProduct);
+    })
+
+    // Setting total amount
+    let totalAmount = document.querySelector('#totalCartAmount');
+    totalAmount.innerHTML = total; 
 }
