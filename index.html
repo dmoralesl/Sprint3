@@ -7,41 +7,66 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
     <!-- bootstrap -->
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
-        integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    <!-- font awesome -->
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>        <!-- font awesome -->
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.1/css/all.css"
         integrity="sha384-50oBUHEmvpQ+1lW4y57PTFmhCaXp0ML5d60M1M7uH2+nqUivzIebhndOJK28anvf" crossorigin="anonymous">
-    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="styles/main.css">
 
-    <title>ShopNow</title>
+    <title>SecretBakery</title>
 </head>
 
 <body>
     <!-- header -->
-    <header class="m-5">
-        <h1 class="text-center m-5"><i class="fas fa-shopping-cart mr-2"></i> ShopNow</h1>
-        <h3 class="text-center m-3">Welcome to your Online Shopping Store.</h3>
+    <header class="mx-3 mt-5 d-flex">
+        <h1 class="text-center m-auto"><span>Secret</span>Bakery</h1>
     </header>
 
-    <!-- Buttons -->
-    <h3 class="text-center">Select your category:</h3>
-    <div class="text-center">
-        <button type="button" onclick="window.location.href = 'grocery.html#grocery';" class="btn m-4 mt-5 btn btn-primary">Grocery</button>
-        <button type="button" onclick="window.location.href = 'grocery.html#beauty';" class="btn m-4 mt-5 btn btn-primary">Beauty</button>
-        <button type="button" onclick="window.location.href = 'grocery.html#clothes';" class="btn m-4 mt-5 btn btn-primary">Clothes</button>
+    <!-- Categories -->
+    <div class="row row-cols-2 row-cols-lg-4 text-center align-items-center px-5 col-md-10 col-lg-8 m-auto" id="categories">
+        <div class="col">
+            <img src="/images/flour.png" alt="Bag of flour" onclick="window.location.href = 'shop.html#ingredients';" >
+            <h6>Ingredients</h6>
+        </div>
+        <div class="col">
+            <img src="/images/toppings.png" onclick="window.location.href = 'shop.html#toppings';" alt="Spoon with sweet toppings">
+            <h6>Toppings</h6>
+        </div>    
+        <div class="col">
+            <img src="/images/stuff.png" onclick="window.location.href = 'shop.html#stuff';" alt="Some kitchen stuff">
+            <h6>Kitchen Stuff</h6>
+        </div>
+        <div class="col">
+            <img src="/images/apron.png" alt="Apron to cook" onclick="window.location.href = 'shop.html#clothes';">
+            <h6>Clothes</h6>
+        </div>
     </div>
 
-    <!-- script tags -->
-    <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js"
-        integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous">
-    </script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js"
-        integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous">
-    </script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"
-        integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous">
-    </script>
+
+    <!-- Carousel -->
+    <!-- In this version is hardcoded with 3 images, but in production we should
+    fetch data from an external source like an API and display it dinamycally -->
+    <div id="hotSales" class="d-flex flex-column justify-content-center align-items-center">
+        <div id="hotSalesImages" class="d-flex align-items-center justify-content-center p-relative w-75">
+            <span class="d-none d-lg-flex justify-content-center align-items-center fw-normal fs-5">Hot Sales. Hurry up!</span>
+            <div>
+                <img src="images/shop/chef-hat.jpg" class="img-fluid mx-auto d-block" alt="Chef hat">
+            </div>
+            <div class="active">
+                <img src="images/shop/apron.jpg" class="img-fluid mx-auto d-block" alt="Apron with leather suspenders">
+            </div>
+            <div>
+                <img src="/images/shop/spices-mix.jpg" class="img-fluid mx-auto d-block" alt="Spices mix">
+            </div>
+        </div>
+        <p class="pt-4 text-center fw-lighter opacity-75">-- Leather suspenders apron --</p>
+    </div>
+
+
+    <!-- Top circle for animations -->
+    <div id="overlayCicrcle"></div>
+
+    <script src="/js/main.js"></script>
 </body>
 
 </html>
