@@ -1,0 +1,419 @@
+@import url('https://fonts.googleapis.com/css?family=Poppins');
+@font-face {
+    font-family: "Benilla";
+    src: url("/fonts/Benilla Calligraphy.ttf");
+  }
+
+$main-white: #f8f8f8;
+$light-white: #e7e5e7;
+$light-grey: rgba(194, 189, 189, 0.15);
+$general-bg: rgb(71, 66, 66);
+$medium-grey: rgb(109, 103, 103);
+
+body{
+    font-family: Poppins;
+    background-color: $general-bg;
+    color: $main-white;
+    overflow-x: clip;
+    position: relative;
+}
+
+header {
+    height: 10vh;
+}
+
+h1, h3 {
+    font-weight: normal;
+    font-style: italic;
+
+    animation: 1s ease-out .25s 1 appearFromTopAndBounce;
+    // To make element not visible until animation starts
+    animation-fill-mode: forwards;
+    opacity: 0;
+
+    span {
+        opacity: .7;
+    }
+}
+
+nav { padding: 0 1rem; }
+
+label { color: $general-bg; }
+
+form {
+    h4 {
+        background-color: $medium-grey;
+        padding: .5rem;
+        border-radius: 1rem;
+        border: 2px solid $light-white;
+        font-weight: lighter;
+        opacity: .75;
+    }
+}
+
+.dark {
+    color: $general-bg;
+}
+
+.img-wrapper {
+    display: grid;
+    justify-content: center;
+    align-items: center;
+    min-height: 200px;
+    max-height: 50%;
+    background-color: $light-grey;
+    border-radius: 1rem;
+
+    img {
+        max-height: max(100%, 200px);
+        width: min(16.5rem, 100%);
+    }
+}
+
+.card {
+    background-color: $medium-grey;
+    border-radius: 1rem;
+    border: 3px solid $light-grey;
+    
+    button:active {
+        transform: scale(1.1);
+    }
+
+    i {
+        color: $general-bg;
+    }
+
+    h5 {
+        border-top: 1px solid $light-white;
+        border-bottom: 1px solid $light-white;
+        padding: .5rem;
+    }
+
+    .price {
+        font-size: xx-large;
+        
+        span { font-size: small; }
+    }
+
+    .offer {
+        position: absolute;
+        top: .3rem;
+        right: .3rem;
+        color: $light-white;
+        font-size: larger;
+    }
+
+}
+
+.category-header {
+
+    padding: 2rem 1rem 0 1rem; 
+    font-family: 'Benilla';
+    text-decoration: underline;
+
+    hr {
+        background-color: $light-white;
+        transform: translateY(-.6rem);
+    }
+
+    hr:first-of-type {
+        transform: translateY(-0.25rem);
+        width: 50%;
+        margin: auto;
+        opacity: .5;
+        height: 1.20px;
+
+        @media screen and (max-width: 720px) {
+            & {
+                width: 75%;
+            }
+        }
+    }
+
+}
+
+.navbar{
+    background-color: $light-white !important;
+    
+    span, a {
+        color: $general-bg !important;
+    }
+}
+
+.validation-error { 
+    margin-bottom: 0; 
+    font-size: .7rem;
+    font-weight: lighter;
+}
+
+.incorrect-value { border: 2px solid red; }
+
+#hotSales { 
+    height: calc(50vh - 3rem); 
+    animation: 2s ease-out 2s 1 fadeIn;
+    // To make element not visible until animation starts
+    animation-fill-mode: forwards;
+    opacity: 0;
+
+    p { opacity: 70%; }
+
+    @media screen and (max-width: 960px) {
+        & { 
+            height: 100%;
+            margin-top: 3rem; 
+        }
+    }
+
+    
+}
+
+#hotSalesImages {
+    div, img {
+        width: 7rem;
+        height: 8rem;
+        object-fit:contain;
+        background-color: $light-grey;
+        margin: 0 .5rem 0 .5rem;
+    }
+
+    .active, .active img {
+        width: 9rem;
+        height: 10rem;
+        
+    }
+
+    div:not(.active) {
+        opacity: .5;
+    }
+
+    img { cursor: pointer; }
+
+    span {
+        position: absolute;
+        height: 2rem;
+        width: 100%;
+        background-color: rgba($light-white, 1);
+        z-index: -99999;
+        top: calc(50% - 3rem);
+        color: $general-bg;
+        padding-right: 60%;
+
+        animation: 2s ease-out 3.5s 1 openHole;
+        // To make element not visible until animation starts
+        animation-fill-mode: forwards;
+        opacity: 0;
+
+    }
+
+}
+
+#categories {
+
+    height: max(100%);
+
+
+    & img, h6 {
+        cursor: pointer;
+    }
+    
+    img {
+        width: 100%;
+        max-width: 140px;
+        animation: 2s ease-out .75s 1 appearFromTop;
+        // To make element not visible until animation starts
+        animation-fill-mode: forwards;
+        opacity: 0;
+    
+    }
+
+    h6 {
+        animation: 2s ease-out 2s 1 fadeIn;
+        // To make element not visible until animation starts
+        animation-fill-mode: forwards;
+        opacity: 0;
+        color: $light-white;
+
+    }
+
+    @media screen and (min-width: 960px) {
+        & { height: 40vh; }
+    }
+}
+
+#overlayCicrcle {
+    height: 10vh;
+    width: 80vw;
+    background-color: $light-white;
+    border: .7rem solid $light-grey;
+    border-radius: 50%;
+    display: inline-block;
+    position: fixed;
+    top: -5vh;
+    left: 10vw;
+
+    animation: .5s ease-out 0s 1 openHole, .5s ease-out 2.5s 1 closeHole;
+    animation-fill-mode: forwards;
+}
+
+#cartModal {
+    color: $general-bg;
+
+    .modal-content { 
+        background-color: $light-white; 
+        border-radius: 1rem;
+
+    }
+
+    .modal-header { 
+        justify-content: center; 
+        background-color: $medium-grey;
+        color: $light-white;
+        padding: .7rem .7rem;
+        margin: .3rem .3rem;
+        border-radius: .5rem;
+    }
+    .modal-footer { padding-top: 0; }
+
+    ul { 
+        list-style: none; 
+        padding: 0;
+    }
+
+    li {        
+        padding: 0.3rem 2rem;
+        display: flex;
+        align-items: center;
+        gap: .5rem;
+        margin-top: 0.3rem;
+        border-radius: 1rem;
+
+        div:last-child {
+            display: flex;
+            justify-content: end;
+            gap: .8rem;
+            flex: 1;
+        }
+
+        i { 
+            color: red; 
+            cursor: pointer;
+        }
+    }
+    li:nth-child(odd) {
+        background-color: $main-white;
+    }
+
+    .cart-quantity {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: .2rem .4rem .2rem .4rem;
+        min-width: 1.5rem;
+        border: 1.5px solid rgba($general-bg, .5);
+        border-radius: .5rem;
+        box-sizing: unset;
+    }
+    
+    .original-subtotal {
+        text-decoration: line-through;
+        font-style: italic;
+        opacity: .6;
+    }
+}
+
+#totalCartAmount {
+    color: $medium-grey;
+    border: 1px solid green;
+    border-radius: 1rem;
+    padding: .5rem 2rem;
+    width: min-content;
+    margin: auto;
+}
+
+#subheaderCheckout{ font-size: smaller; }
+
+// Keyframes to add transition effects to render page
+@keyframes appearFromTop {
+    0% {
+        opacity: 1;
+        transform: translate3d(0, -100vh, 0) rotate(0); 
+    }
+
+    100% {
+        opacity: 1;
+        transform: translate3d(0, 0, 0) rotate(1080deg);
+    }
+  }
+
+
+@keyframes appearFromTopAndBounce {
+    0% {
+        opacity: 1;
+        transform: translate(0, -100%);
+      }
+
+    30% {
+        transform: translate(0, 0);
+        transform: rotate(-3deg);
+        transform-origin: top left;
+    }
+
+    40% {
+        transform: rotate(5deg);
+        transform-origin: top right;
+    }
+
+    70% {
+        transform: rotate(-5deg);
+        transform-origin: top left;
+    }
+ 
+    85% {
+        transform: rotate(-3deg);
+        transform-origin: top left;
+    } 
+    
+    100% {
+        opacity: 1;
+        transform: rotate(0);
+    } 
+}  
+
+@keyframes openHole {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    100% {
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+@keyframes closeHole {
+    0% {
+        transform: scale(1);
+    }
+    100% {
+        transform: scale(0);
+    }
+}
+
+@keyframes fadeIn {
+    0% {
+        opacity: 0;
+        transform: scale(0);
+    }
+    100% {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+
+
+// Checkout
+#errorPassword, #errorName, #errorPhone, #errorEmail, .validation-error {
+    display: none;
+}
+

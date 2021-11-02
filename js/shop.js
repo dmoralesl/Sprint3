@@ -1,25 +1,37 @@
+// Activating BS tooltips
+document.addEventListener("DOMContentLoaded", function(){
+    var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+    var tooltipList = tooltipTriggerList.map(function(element){
+        return new bootstrap.Tooltip(element);
+    });
+});
+
 // Exercise 11
 // Move this variable to a json file and load the data in this js
 var products;
-fetch('../data/grocery.json')
+fetch('../data/products.json')
     .then( response => response.json())
         .then( json => products = json);
 
 var cartList = [];
 var cart = [];
 var subtotal = {
-    grocery: {
+    ingredients: {
         value: 0, 
         discount: 0
     },
-    beauty: {
+    toppings: {
+        value: 0, 
+        discount: 0
+    },
+    stuff: {
         value: 0, 
         discount: 0
     },
     clothes: {
         value: 0, 
         discount: 0
-    },
+    }
 };
 var total = 0;
 
@@ -49,10 +61,16 @@ function calculateSubtotals() {
 // Exercise 4
 function calculateTotal() {
     // Calculate total price of the cart either using the "cartList" array
+
+    // Guard clause checking that card is empty after remove last product
+    if (cart.length === 0) {
+        total = 0;
+        return;
+    }
     // [David] Getting values (objects) from subtotals object. Then extracting value (type is not interesting at this point)
     // and reducing value to sum all subtotals to get total amount.
-    total = Object.values(subtotal)
-        .map(subtotal => subtotal.value)
+    total = cart
+        .map(product => product.subtotalWithDiscount)
             .reduce((previousValue, currentSubtotal) => {
                 return previousValue + currentSubtotal;
                 });
@@ -70,9 +88,9 @@ function applyPromotionsSubtotals() {
 function applyPromotionsCart() {
     // Apply promotions to each item in the array "cart"
     cart.map( (product, index) => {
-        if (product.name === 'cooking oil' && product.quantity > 2) {
-            cart[index].subtotalWithDiscount = cart[index].quantity * 10;
-        } else if (product.name === 'Instant cupcake mixture' && cart[index].quantity > 9) {
+        if (product.name === 'Ecologic eggs' && product.quantity > 2) {
+            cart[index].subtotalWithDiscount = cart[index].quantity * 2.5;
+        } else if (product.name === 'Butter' && cart[index].quantity > 9) {
             cart[index].subtotalWithDiscount = cart[index].quantity * (cart[index].price * 0.66);
         } else {
             cart[index].subtotalWithDiscount = cart[index].quantity * cart[index].price;
@@ -114,19 +132,17 @@ function addToCart(id) {
     // Updating subtotals with new product added
     calculateSubtotals();
 
-    // Updating total amount
-    calculateTotal();
-
     // Checking if promotions should be applied
     applyPromotionsCart();
-    console.log(cart)
+
+    // Updating total amount
+    calculateTotal();
 }
 
 // Exercise 9
-function removeFromCart(id) {
-    // Getting model of product to remove
-    const product = products[id -1];
-    const indexProductInCart = cart.findIndex( cartProduct => cartProduct.name === product.name);
+function removeFromCart(name) {
+
+    const indexProductInCart = cart.findIndex( cartProduct => cartProduct.name === name);
     // If we have only one product of this type in the cart we remove the object in the array
     if (cart[indexProductInCart].quantity === 1) {
         cart.splice(indexProductInCart, 1);
@@ -139,7 +155,11 @@ function removeFromCart(id) {
         // And we must calculate subtotalWithDisccount again because removing quantity could change the rules
         applyPromotionsCart();
     }
-    console.log(cart);
+
+    // Updating total cart after remove item
+    calculateTotal();
+    // Refreshing cart print
+    printCart();
 }
 
 
@@ -153,11 +173,33 @@ function printCart() {
     // Fill the shopping cart modal manipulating the shopping cart dom
     cart.map(product => {
         let newProduct = document.createElement('li');
-        newProduct.innerHTML = `x${product.quantity} - ${product.name} (${product.subtotalWithDiscount})`;
+        // Adding icon to remove a unit of product
+        newProduct.innerHTML = `<i class="fas fa-minus-square" onclick="removeFromCart('${product.name}')"></i>`;
+        // Showing number of product in cart
+        newProduct.innerHTML += `<span class="cart-quantity">${product.quantity}</span>`
+        // Adding name of the product
+        newProduct.innerHTML += `<span>${product.name}</span>`
+        // Adding prices. If product has disccount we show subtotals
+        if (product.subtotal !== product.subtotalWithDiscount) {
+            newProduct.innerHTML += `
+                <div>
+                    <span class="original-subtotal">
+                        ${product.subtotal}$
+                    </span>
+                    <span>
+                        ${product.subtotalWithDiscount}$
+                    </span>
+                </div>`
+        } else {
+            newProduct.innerHTML += `<div>${product.subtotal}$</div>`
+        }
+        //`x${product.quantity} - ${product.name} (${product.subtotalWithDiscount})`;
+        
+        
         listProducts.appendChild(newProduct);
     })
 
     // Setting total amount
     let totalAmount = document.querySelector('#totalCartAmount');
-    totalAmount.innerHTML = total; 
+    totalAmount.innerHTML = total + '$'; 
 }
